@@ -1,0 +1,28 @@
+# $Id: local.rules,v 1.11 2004/07/23 20:15:44 bmc Exp $
+# ----------------
+# LOCAL RULES
+# ----------------
+# This file intentionally does not come with signatures.  Put your local
+# additions here.
+#alert tcp any any -> any any \
+
+#DoS Detetction
+alert tcp any any -> any any (flags: S; msg:"infection DoS"; flow: stateless; threshold: type both, track by_dst, count 10, seconds 25; sid:1000001;rev:1;)
+
+# XMAS Scan detection
+alert tcp any any -> any any (msg:"infection Scan"; flags: FPU; sid: 1000002;rev: 1;) 
+# NULL Scan detection
+alert tcp any any -> any any (msg:"infection Scan"; flags: 0; sid: 1000003;rev: 1;) 
+
+# Download cnc
+alert tcp any any -> any any (msg:"cnc"; sid:1000004; rev: 1; content:"$download"; nocase;)
+# Uninstall cnc
+alert tcp any any -> any any (msg:"cnc"; sid:1000005; rev: 1; content:"$uninstall"; nocase;)
+# Checkin cnc
+alert tcp any any -> any any (msg:"cnc"; sid:1000006; rev: 1; content:"$checkin"; nocase;)
+# Scanin cnc
+alert tcp any any -> any any (msg:"cnc"; sid:1000007; rev: 1; content:"$scanin"; nocase;)
+# The rest ... cnc
+alert tcp any any -> any any (msg:"cnc"; sid:1000008; rev: 1; content:"Before sending command to bot"; nocase;)
+# All connections
+alert tcp any any -> any any (msg:"other"; sid:1000009; rev: 1;)
